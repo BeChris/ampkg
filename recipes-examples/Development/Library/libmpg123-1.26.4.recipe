@@ -1,0 +1,88 @@
+{
+  "SUMMARY": "mpg123 with libmpg123 1.26.4 - Fast console MPEG Audio Player and decoder library. Port by BeWorld",
+
+  "MAINTAINERS" : [
+    "BeWorld <email address>",
+    "BeChris <bechris13250@gmail.com>"
+  ],
+
+  "HOMEPAGE": "http://mpg123.org/",
+  
+  "//ARCH": "Only for MorphOS !", 
+  "ARCH": "ppc-morphos",
+  
+  "//URL": "Clone BeWorld git mpg123 repository",
+  "URL": [
+    {
+      "git+https://github.com/BeWorld2018/mpg123": "e080a63"
+    }
+  ],
+
+  "//PROVIDES": "This package provided binary files and/or a development files",
+  "PROVIDES": [
+    {
+      "mpg123": "1.26.4-1"
+    },
+    {
+      "libmpg123-devel": "1.26.4-1"
+    }
+  ],
+
+  "//BUILD_MANDATORY": "needs sdk>=20210211 to be able to use GCC 10",
+  "BUILD_MANDATORY": [
+    {
+      "sdk": ">=20210211"
+    },
+    {
+      "sdl2-devel": "2.0.14"
+    }
+  ],
+
+  "//BUILD": "commands executed to generate files to included in the package",
+  "BUILD": [
+    "cd mpg123 && configure CC=ppc-morphos-gcc-10 --prefix=/gg/usr/local/ --host=ppc-morphos CFLAGS=-noixemul LDFLAGS=-noixemul --enable-static --disable-shared --with-cpu=altivec --disable-messages --disable-network --with-optimization=2 --with-default-audio=sdl SDL_CFLAGS=-I/usr/local/include/SDL2 SDL_LIBS=-lSDL2",
+    "make -C mpg123 -f Makefile.mos"
+  ],
+
+  "//RUN_MANDATORY": "Doesn't work without sdl2.library",
+  "RUN_MANDATORY": [
+    {
+      "sdl2": "2.0.14"
+    }
+  ],
+
+  "//PRE_MESSAGES": "Display some informations before starting the installation/upgrade",
+  "PRE_MESSAGES": [
+    "Welcome to simple installer of mpg123 and libmpg123 for MorphOS."
+  ]
+
+  "//PACKAGED": "Include all binary and development related files in the package",
+  "PACKAGED": [
+    "mpg123/libmpg123_shared.a",
+    "mpg123/src/libmpg123/fmt123.h",
+    "mpg123/src/libmpg123/mpg123.h",
+    "mpg123/mpg123",
+    "mpg123/mpg123-id3dump",
+  ],
+ 
+  "//INSTALL": "For end users only install mpg123 and mpg123-id3dump in SYS:Utilities",
+  "INSTALL": [
+    {
+      "mpg123/mpg123": "SYS:Utilities/"
+    },
+    {
+      "mpg123/mpg123-id3dump": "SYS:Utilities/"
+    },
+  ],
+
+  "//INSTALL_DEV": "For developpers install libmpg123_shared.a in /usr/local/lib and includes in /usr/local/include",
+  "INSTALL_DEV": [
+    {
+      "mpg123/libmpg123_shared.a": "/usr/local/lib/libmpg123.a"
+    },
+    {
+      "mpg123/src/libmpg123/*.h": "/usr/local/include/"
+    }
+  ],
+
+}

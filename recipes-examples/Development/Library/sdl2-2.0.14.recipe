@@ -1,0 +1,91 @@
+{
+  "SUMMARY": "SDL2 library for MorphOS ported by BeWorld",
+
+  "MAINTAINERS" : [
+    "BeWorld <email address>",
+    "BeChris <bechris13250@gmail.com>"
+  ],
+
+  "HOMEPAGE": "https://www.libsdl.org/index.php",
+  
+  "//ARCH": "Only for MorphOS !", 
+  "ARCH": "ppc-morphos",
+  
+  "//URL": "Clone BeWorld git SDL and gamecontrollerdb repositories",
+  "URL": [
+    {
+      "git+https://github.com/BeWorld2018/SDL": "b283758"
+    },
+    {
+      "git+https://github.com/BeWorld2018/gamecontrollerdb.txt": "9a418e8"
+    }
+  ],
+
+  "//PROVIDES": "This package provided binary files and/or a development files",
+  "PROVIDES": [
+    {
+      "sdl2": "2.0.14-1"
+    },
+    {
+      "sdl2-devel": "2.0.14-1"
+    }
+  ],
+
+  "//BUILD_MANDATORY": "needs sdk>=20210211 to be able to use GCC 10",
+  "BUILD_MANDATORY": [
+    {
+      "sdk": ">=20210211"
+    }
+  ],
+
+  "//BUILD": "commands executed to generate files to included in the package",
+  "BUILD": [
+    "make -C SDL -f Makefile.mos"
+  ],
+
+  "//PRE_MESSAGES": "Display some informations before starting the installation/upgrade",
+  "PRE_MESSAGES": [
+    "Welcome to simple installer of SDL2 libraries for MorphOS.\n\nRelease date : 18 may 2021"
+  ]
+
+  "//PACKAGED": "Include all binary and development related files in the package",
+  "PACKAGED": [
+    "SDL/sdl2.library",
+    "SDL/include/*.h",
+    "SDL/src/core/morphos/devenv/lib/libSDL2.a",
+    "SDL/src/core/morphos/devenv/lib/libb32/libSDL2.a",
+    "SDL/ReadMe.MorphOS",
+    "gamecontrollerdb.txt/gamecontrollerdb.txt"
+  ],
+ 
+  "//INSTALL": "For end users only install sdl2.library in Libs: and gamecontrollerdb.txt in ENVARC: and ENV:",
+  "INSTALL": [
+    {
+      "SDL/sdl2.library": "Libs:"
+    },
+    {
+      "gamecontrollerdb.txt/gamecontrollerdb.txt": "ENVARC:gamecontrollerdb.txt"
+    },
+    {
+      "gamecontrollerdb.txt/gamecontrollerdb.txt": "ENV:gamecontrollerdb.txt"
+    }
+  ],
+
+  "//INSTALL_DEV": "For developpers install libsdl.a in /usr/local/lib and includes in /usr/local/include",
+  "INSTALL_DEV": [
+    {
+      "SDL/src/core/morphos/devenv/lib/libSDL2.a": "/usr/local/lib/"
+    },
+    {
+      "SDL/src/core/morphos/devenv/lib/libb32/libSDL2.a": "/usr/local/lib/libb32/"
+    },
+    {
+      "SDL/include/*.h": "/usr/local/include/SDL2/"
+    }
+  ],
+
+  "//POST_MESSAGES": "Display content of ReadMe.MorphOS at the end of installation/upgrade",
+  "POST_MESSAGES": [
+    "file://SDL/ReadMe.MorphOS"
+  ]
+}

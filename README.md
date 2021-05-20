@@ -80,6 +80,23 @@ Each seaction can contain either:
 Several choices are show like this : (choice1|choice2|choice3)\
 Value optional part are shown like this : [optional part]
 
+## Using comments
+JSON fileformat not officially supporting comments, the following convention will be followed:\
+To add a comment to a section, a specific section with the same name (but starting with //) will be used.
+
+Examples:
+```
+{
+    "//SUMMARY": "This a comment for SUMMARY section",
+    "SUMMARY": "This is the real SUMMARY section"
+}
+```
+
+## Using aliases
+For any string value it is possible to use aliases : their value will be autoamtically substituted by ampkg.\
+Referencing an alias is done like this : $(alias)\
+For the moment only CATEGORY alias is available.
+
 ## Mandatory sections
 ### SUMMARY
 Contains the package short description in 100 characters maximum.
@@ -171,11 +188,16 @@ Examples:
 {
     "PROVIDES": [
         {
-            "sdl2": "2.0.14"
+            "sdl2": "2.0.14-1"
         }
     ]
 }
 ```
+
+**IMPORTANT**: it may be possible, for the same upstream package version (in this case sdl2 2.0.14), to evolve the corresponding recipe file.\
+In this case, the last part in version value (here the -1 in 2.0.14-1) must be increased everytime the recipe evolves but provides the same
+upstream package version.
+
 
 ### PACKAGED
 This section is used to provide a list of directories and/or files from downloaded files or cloned git repositories (see _URL_ section above).\
@@ -195,6 +217,9 @@ Examples:
 This section is used to provide a list of directories and/or files from downloaded package.\
 Those directories and/or files will be copied on user system when the package is installed or upgraded.
 They will be deleted when the package is removed.
+
+**IMPORTANT**: paths ending with ':' or '/' are considered to be destination directories.\
+Otherwise they are considered to be destination files.
 
 Examples:
 ```
@@ -295,13 +320,31 @@ Examples:
 }
 ```
 
-### MESSAGES
-List of messages to be displayed after package installation/upgrade is done.
+### PRE_MESSAGES
+List of messages to be displayed before package installation/upgrade is done.\
+They are all concatenated and displayed in one message bloc.\
+To start a new bloc, include a string "@@@@" in the message list.\
+If a message starts with file:// the the content of file path given after file:// is displayed.
 
 Examples:
 ```
 {
-    "MESSAGES": [
+    "PRE_MESSAGES": [
+        "Wellcome to this package"
+    ]
+}
+```
+
+### POST_MESSAGES
+List of messages to be displayed after package installation/upgrade is done.\
+They are all concatenated and displayed in one message bloc.\
+To start a new bloc, include a string "@@@@" in the message list.\
+If a message starts with file:// the the content of file path given after file:// is displayed.
+
+Examples:
+```
+{
+    "POST_MESSAGES": [
         "Well done!",
         "See you soon."
     ]
@@ -324,7 +367,8 @@ Examples:
 
 ### INSTALL_DEV
 Same as INSTALL section except that it shall indicates only files specific to development files (headers, static libs, docs).\
-User will choose whether he wants to install development files when installing a package
+User will choose whether he wants to install development files when installing a package.\
+The same rules on paths formating found in INSTALL section apply here also.
 
 ### SCREENSHOTS
 List of URL to images representing screenshots of the package

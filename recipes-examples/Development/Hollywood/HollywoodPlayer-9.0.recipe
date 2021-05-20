@@ -1,0 +1,60 @@
+{
+  "SUMMARY": "The Hollywood Player is a program that can run applets compiled by Hollywood.",
+
+  "MAINTAINERS" : [
+    "BeChris <bechris13250@gmail.com>"
+  ],
+
+  "HOMEPAGE": "https://www.hollywood-mal.com/index.html",
+  
+  "//ARCH": "Only for MorphOS !", 
+  "ARCH": "ppc-morphos",
+  
+  "//URL": "Download Hollywood Player from official homepage",
+  "URL": [
+    {
+      "https://www.hollywood-mal.com/download/HWPlayer_Amiga.lha": "18ed579437a2da1eec0c37ac0ed60b4c"
+    }
+  ],
+
+  "//PROVIDES": "This package provided binary files",
+  "PROVIDES": [
+    {
+      "Hollywood:Player": "9.0-1"
+    }
+  ],
+
+  "//PRE_MESSAGES": "Display some informations before starting the installation/upgrade",
+  "PRE_MESSAGES": [
+    "Welcome to the Setup utility for the\n\n",
+    "Hollywood Player 9.0\n\n",
+    "Copyright © 2002-2021 by Andreas Falkenhahn"
+  ]
+
+  "//PACKAGED": "Include HollywoodPlayer itself and the samples",
+  "PACKAGED": [
+    "HollywoodPlayer/Platform/MorphOS/HollywoodPlayer",
+    "HollywoodPlayer/Samples/*.*"
+  ],
+ 
+  "//INSTALL": "Copy HollywoodPlayer to SYS:Utilities and samples to Samples:$(CATEGORY)",
+  "INSTALL": [
+    {
+      "HollywoodPlayer/Platform/MorphOS/HollywoodPlayer": "SYS:Utilities/"
+    },
+    {
+      "HollywoodPlayer/Samples/*.*": "Samples:$(CATEGORY)/"
+    }
+  ],
+
+  "//POST_MESSAGES": "Display some informations at the end of installation/upgrade",
+  "POST_MESSAGES": [
+    "\nHollywood Player has been installed successfully to SYS:Utilities. The sample ",
+    "applets have been installed in Samples:$(CATEGORY).\n\n",
+    "@@@@",
+    "\nHere are some useful hotkeys that work with most applets:\n\n",
+    "CMD+RETURN: will switch between window and fullscreen mode\n",
+    "CMD+h: will iconify the applet\n",
+    "CTRL-C: will quit the applet\n\n"
+  ]
+}

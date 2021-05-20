@@ -1,0 +1,86 @@
+{
+  "SUMMARY": "SDL2_image library for MorphOS ported by BeWorld",
+
+  "MAINTAINERS" : [
+    "BeWorld <email address>",
+    "BeChris <bechris13250@gmail.com>"
+  ],
+
+  "HOMEPAGE": "http://www.libsdl.org/projects/SDL_image/",
+  
+  "//ARCH": "Only for MorphOS !", 
+  "ARCH": "ppc-morphos",
+  
+  "//URL": "Clone BeWorld git SDL_image repository",
+  "URL": [
+    {
+      "git+https://github.com/BeWorld2018/SDL_image": "2651f34"
+    }
+  ],
+
+  "//PROVIDES": "This package provided binary files and/or a development files",
+  "PROVIDES": [
+    {
+      "sdl2_image": "2.0.14-1"
+    },
+    {
+      "sdl2_image-devel": "2.0.14-1"
+    }
+  ],
+
+  "//BUILD_MANDATORY": "needs sdk>=20210211 to be able to use GCC 10",
+  "BUILD_MANDATORY": [
+    {
+      "sdk": ">=20210211"
+    },
+    {
+      "sdl2-devel": "2.0.14"
+    }
+  ],
+
+  "//BUILD": "commands executed to generate files to included in the package",
+  "BUILD": [
+    "make -C SDL_image -f Makefile.mos"
+  ],
+
+  "//RUN_MANDATORY": "Doesn't work without sdl2.library",
+  "RUN_MANDATORY": [
+    {
+      "sdl2": "2.0.14"
+    }
+  ],
+
+  "//PRE_MESSAGES": "Display some informations before starting the installation/upgrade",
+  "PRE_MESSAGES": [
+    "Welcome to simple installer of SDL2_image library for MorphOS.\n\nRelease date : 18 may 2021"
+  ]
+
+  "//PACKAGED": "Include all binary and development related files in the package",
+  "PACKAGED": [
+    "SDL_image/sdl2_image.library",
+    "SDL_image/SDL_image.h",
+    "SDL_image/MorphOS/devenv/lib/libSDL2_image.a",
+    "SDL_image/MorphOS/devenv/lib/libb32/libSDL2_image.a"
+  ],
+ 
+  "//INSTALL": "For end users only install sdl2_image.library in Libs:",
+  "INSTALL": [
+    {
+      "SDL_image/sdl2_image.library": "Libs:"
+    }
+  ],
+
+  "//INSTALL_DEV": "For developpers install libSDL2_image.a in /usr/local/lib and includes in /usr/local/include",
+  "INSTALL_DEV": [
+    {
+      "SDL_image/MorphOS/devenv/lib/libSDL2_image.a": "/usr/local/lib/"
+    },
+    {
+      "SDL_image/MorphOS/devenv/lib/libb32/libSDL2_image.a": "/usr/local/lib/libb32/"
+    },
+    {
+      "SDL_image/SDL_image.h": "/usr/local/include/SDL2/"
+    }
+  ],
+
+}
