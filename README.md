@@ -1,7 +1,7 @@
 # ampkg
 A package manager tool for operating systems based or derived from AmigaOS (AmigaOS classic, AmigaOS4, AROS, MorphOS)
 
-Being inspired by Haiku portage, Archlinux Pacman and so on, 
+Being inspired by Haiku portage, Gentoo Linux Portage, Archlinux Pacman and so on, 
 
 ampkg can be used with a Graphic User Interface or via the terminal (using commandline arguments).\
 People using the tool can be split in three different categories:
@@ -72,7 +72,7 @@ If the package indicates some OPTIONAL depedencies they are show to the user and
 ## More about recipe files
 
 They must contain mandatory sections and eventually optional sections.\
-Each seaction can contain either:
+Each section can contain either:
 1. A string (one line or spead on several lines)
 2. A dictionnary containing key/value pairs
 3. TO BE CONTINUED
@@ -93,9 +93,13 @@ Examples:
 ```
 
 ## Using aliases
-For any string value it is possible to use aliases : their value will be autoamtically substituted by ampkg.\
+For any string value it is possible to use aliases : their value will be automatically substituted by ampkg.\
 Referencing an alias is done like this : $(alias)\
-For the moment only CATEGORY alias is available.
+
+Below list of available aliases:
+
+### CATEGORY
+Replaced by category of package to be installed/upgraded/uninstalled.
 
 ## Mandatory sections
 ### SUMMARY
@@ -110,35 +114,35 @@ Examples:
 
 ### ARCH
 Contains a value matching pattern (arm|ppc|x86|m68k)-(aros|amigaos|morphos) [version restrictions] to indicate for which architecture the package is generated.\
-The special **any** value can be used to indicate the package can be installed and used on any architecture and any os.
+The special **any** value can be used to indicate the package can be installed and used on any architecture and any OS.
 
 For the moment only **ppc-morphos** and **any** will be supported.
 
 Examples:
 ```
-// usable on any PowerPC based computers running MorphOS at any version
 {
+    "//ARCH": "usable on any PowerPC based computers running MorphOS at any version",
     "ARCH": "ppc-morphos"
 }
 ```
 
 ```
-// usable on any PowerPC based computers running MorphOS at version >= 1.5
 {
+    "//ARCH": "usable on any PowerPC based computers running MorphOS at version >= 1.5",
     "ARCH": "ppc-morphos >= 1.5"
 }
 ```
 
 ```
-// usable on any PowerPC based computers running MorphOS at version >= 1.5 and <= 2.0
 {
+    "//ARCH": "usable on any PowerPC based computers running MorphOS at version >= 1.5 and <= 2.0",
     "ARCH": "ppc-morphos >= 1.5 <= 2.0"
 }
 ```
 
 ```
-// usable on any architecture (for example for data only packages)
 {
+    "//ARCH": "usable on any architecture (for example for data only packages)",
     "ARCH": "any"
 }
 ```
@@ -153,8 +157,8 @@ If the link to the file starts with file:// then it will be downloaded from a pa
 
 Examples:
 ```
-// An archive an a patch file to be downloaded with their associated MD5 sum
 {
+    "//URL": "An archive an a patch file to be downloaded with their associated MD5 sum",
     "URL": [
         {
             "https://www.libsdl.org/release/SDL2-2.0.14.tar.gz": "76ed4e6da9c07bd168b2acd9bfefab1b"
@@ -168,8 +172,8 @@ Examples:
 ```
 
 ```
-// A git repository to be cloned at release-2.0.14 tag
 {
+    "//URL": "A git repository to be cloned at release-2.0.14 tag",
     "URL": [
         {
             "git+https://github.com/libsdl-org/SDL.git": "release-2.0.14"
@@ -205,8 +209,8 @@ Those directories and/or files will be included in generated package.
 
 Examples:
 ```
-// When he package is generated include everything from the SDL2 directory
 {
+    "//PACKAGED": "When the package is generated include everything from the SDL2 directory",
     "PACKAGED": [
         "SDL2"
     ]
@@ -223,8 +227,8 @@ Otherwise they are considered to be destination files.
 
 Examples:
 ```
-// At installation, copy from package SDL2/README.txt file into user Docs: and all files from SDL2/Libs/ into user Libs:
 {
+    "//INSTALL": "At installation, copy from package SDL2/README.txt file into user Docs: and all files from SDL2/Libs/ into user Libs:",
     "INSTALL": [
         {
             "SDL2/README.txt": "Docs:"
@@ -270,12 +274,13 @@ Examples:
 
 ### BUILD_MANDATORY
 List of packages which **must** be installed on developer system in order to be able to compile the package associated to current recipe.\
-For each mandatory an optional version restriction can be indicated (if no package match this restriction is found then the package won't be installed).
+For each mandatory package an optional [version restrictions] can be indicated.\
+If no package matching this restriction is found then the package won't be installed.
 
 Examples:
 ```
-// The package to be compiled absolutly needs sdl2 at version >= 2.0.10 and hollywood compiler at version 8.0
 {
+    "//BUILD_MANDATORY": "The package to be compiled absolutly needs sdl2 at version >= 2.0.10 and hollywood compiler at version 8.0",
     "BUILD_MANDATORY": [
         "sdl2-devel >= 2.0.10",
         "hollywood:compiler = 8.0",
@@ -284,7 +289,7 @@ Examples:
 ```
 
 ### BUILD_OPTIONAL
-Same as BUILD_MANDATORY except packages provided in the list are optional and not mandatory.
+Same as BUILD_MANDATORY except packages provided in the list are optional and not mandatory : if one of them is not found package building is still executed
 
 ### RUN_MANDATORY
 List of packages which **must** be installed on user system in order to be able to execute binaries included in the package to be installed.\
@@ -292,8 +297,8 @@ For each mandatory an optional version restriction can be indicated (if no packa
 
 Examples:
 ```
-// The package to be installed absolutly needs sdl2 at version >= 2.0.10 and sdl2_ttf at version between 2.0.9 and 2.0.11 inclusive
 {
+    "//RUN_MANDATORY": "The package to be installed absolutly needs sdl2 at version >= 2.0.10 and sdl2_ttf at version between 2.0.9 and 2.0.11 inclusive",
     "RUN_MANDATORY": [
         "sdl2 >= 2.0.10",
         "sdl2_ttf >= 2.0.9 <= 2.0.11"
@@ -311,8 +316,8 @@ If a command fails (return code <> 0) the package is not built.
 
 Examples:
 ```
-// Build SDL2 in two steps using make each time
 {
+    "//BUILD": "Build SDL2 in two steps using make each time",
     "BUILD": [
         "make -C SDL2",
         "make -C SDL2 headers"
@@ -324,7 +329,7 @@ Examples:
 List of messages to be displayed before package installation/upgrade is done.\
 They are all concatenated and displayed in one message bloc.\
 To start a new bloc, include a string "@@@@" in the message list.\
-If a message starts with file:// the the content of file path given after file:// is displayed.
+If a message starts with file:// then the content of file path given after file:// is displayed.
 
 Examples:
 ```
@@ -339,7 +344,7 @@ Examples:
 List of messages to be displayed after package installation/upgrade is done.\
 They are all concatenated and displayed in one message bloc.\
 To start a new bloc, include a string "@@@@" in the message list.\
-If a message starts with file:// the the content of file path given after file:// is displayed.
+If a message starts with file:// then the content of file path given after file:// is displayed.
 
 Examples:
 ```
