@@ -1,5 +1,5 @@
 # ampkg
-A package manager tool for operating systems based or derived from AmigaOS (AmigaOS classic, AmigaOS4, AROS, MorphOS)
+A package manager tool for developpers and users of operating systems based or derived from AmigaOS (AmigaOS classic, AmigaOS4, AROS, MorphOS)
 
 Being inspired by Haiku portage, Gentoo Linux Portage, Archlinux Pacman and so on, 
 
