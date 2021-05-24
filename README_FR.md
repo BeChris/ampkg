@@ -1,5 +1,5 @@
 # ampkg
-Un gestionnaire de paquets pour les systèmes d'exploitation basés sur ou dérivés d'AmigaOS (AmigaOS classic, AmigaOS4, AROS, MorphOS)
+Un gestionnaire de paquets pour les développeurs et utilisateurs de systèmes d'exploitation basés sur ou dérivés d'AmigaOS (AmigaOS classic, AmigaOS4, AROS, MorphOS)
 
 Etant inspiré de Haiku ports, Gentoo Linux Portage, Archlinux Pacman et d'autres, 
 
