@@ -101,6 +101,40 @@ Below list of available aliases:
 ### CATEGORY
 Replaced by category of package to be installed/upgraded/uninstalled.
 
+## Strings localization
+Default language is English.
+However it is possible to provide, for a given section, a translation per language.\
+
+Affected sections are:
+1. SUMMARY
+2. HOMEPAGE
+3. PRE_MESSAGES
+4. POST_MESSAGES
+5. CHANGELOG
+6. LINKS
+
+To indicate the language, relevant section must ends with :LANG suffix (where LANG is the ISO_639-1 language code in uppercase).\
+If no section:LANG is found (where LANG is the user system language) then content of section without :LANG suffix is used.
+
+Examples:
+```
+{
+    "//SUMMARY:EN": "SUMMARY content used when user system language is English",
+    "SUMMARY:EN": "This is the real SUMMARY section",
+    "//SUMMARY:FR": "SUMMARY content used when user system language is French",
+    "SUMMARY:FR": "Ceci est la VRAI section SUMMARY"
+}
+```
+
+```
+{
+    "SUMMARY": "Content used if no SUMMARY:LANG section is found according to user system language",
+    "SUMMARY:FR": "Content used if user system language is French",
+    "SUMMARY:EN": "Content used if user system language is English",
+    "SUMMARY:DE": "Content used if user system language is German",
+}
+```
+
 ## Mandatory sections
 ### SUMMARY
 Contains the package short description in 100 characters maximum.

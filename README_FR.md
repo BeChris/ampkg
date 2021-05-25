@@ -102,6 +102,39 @@ Ci-dessous, la liste des alias utilisables:
 ### CATEGORY
 Remplacé par la catégorie du logiciel installé.
 
+## Localisation des chaines de description
+La langue par défaut est l'anglais.
+Mais il est possible de fournir, pour la même section, une chaine de caractères par langue.
+Les sections concernées sont:
+1. SUMMARY
+2. HOMEPAGE
+3. PRE_MESSAGES
+4. POST_MESSAGES
+5. CHANGELOG
+6. LINKS
+
+Pour préciser la langue, la section doit se terminer par le suffixe :LANG (où LANG est le code ISO_639-1 de langue en 2 lettres majuscules).\
+Si aucune section:LANG n'est trouvée (où LANG est la langue du système) alors le contenu de la section sans suffixe :LANG est utilisé.
+
+Exemples:
+```
+{
+    "//SUMMARY:EN": "Contenu utilisé quand la langue du système est Anglais",
+    "SUMMARY:EN": "This is the real SUMMARY section",
+    "//SUMMARY:FR": "Contenu utilisé quand la langue du système est Francais",
+    "SUMMARY:FR": "Ceci est la VRAI section SUMMARY"
+}
+```
+
+```
+{
+    "SUMMARY": "Contenu utilisé quand il n'y pas de section SUMMARY:LANG par rapport à la langue du sytème",
+    "SUMMARY:FR": "Contenu utilisé quand la langue du système est Francais",
+    "SUMMARY:EN": "Contenu utilisé quand la langue du système est Anglais",
+    "SUMMARY:DE": "Contenu utilisé quand la langue du système est Allemand"
+}
+```
+
 ## Sections obligatoires
 ### SUMMARY
 Contient une courte description du paquet en 100 caractères maximum.
