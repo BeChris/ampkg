@@ -145,6 +145,63 @@ Examples:
 }
 ```
 
+## Checking processor capabilities
+Some actions may be done only if processor has or doesn't have a specific capability.\
+
+Affected sections are:
+1. INSTALL
+2. PATCHSET
+3. BUILD_MANDATORY
+4. BUILD_OPTIONAL
+5. RUN_MANDATORY
+6. RUN_OPTIONAL
+7. BUILD
+8. PRE_MESSAGES
+9. POST_MESSAGES
+10. INSTALL_DEV
+11. FILES_MODIFICATION
+
+By default those sections, if included in the recipe file, are taken into account whatever the processor capabilities.\
+To restrict usage of a section only when processor has a set of capabilities, relevant section must ends with :CAPS suffix.\
+CAPS is a space separated list of capabilities in uppercase.
+
+Supported capabilities are:
+1. For PowerPC processors:
+   1. FPU : processor has a FPU
+   2. ALTIVEC : processor has an Altivec unit
+   3. PERFMONITOR : processor has performance measurement cpu extension
+   4. DATASTREAM : processor has datastream cpu extension
+2. For x86 processors:
+   1. FPU : processor has a FPU
+   2. MMX : processor has MMX instruction set
+   3. SSE : processor has SSE instruction set
+   4. SSE2 : processor has SSE2 instruction set
+   5. AVX : processor has AVX instruction set
+   6. AVX2 : processor has AVX2 instruction set
+   7. Capabilities to add ?
+
+Examples:
+```
+{
+    "//BUILD:FPU": "Execute this build command only if CPU has an FPU (no test on other extensions like ALTIVEC)",
+    "BUILD:FPU": "make -f Makefile.fpu"
+}
+```
+
+```
+{
+    "//BUILD:FPU ALTIVEC": "Execute this build command only if CPU has an FPU and ALTIVEC unit",
+    "BUILD:FPU ALTIVEC": "make -f Makefile.altivec_fpu"
+}
+```
+
+```
+{
+    "//BUILD": "Execute this build command whatever the CPU capabilities",
+    "BUILD": "make -f Makefile.generic"
+}
+```
+
 
 ## Mandatory sections
 ### SUMMARY
