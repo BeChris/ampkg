@@ -135,6 +135,17 @@ Examples:
 }
 ```
 
+## Using double quotes in strings
+If it is needed to use double quotes then they must be escaped with two \ (backslash) characters.
+
+Examples:
+```
+{
+    "SUMMARY": "A SUMMARY with \\"quotes\\""
+}
+```
+
+
 ## Mandatory sections
 ### SUMMARY
 Contains the package short description in 100 characters maximum.
@@ -408,6 +419,46 @@ Examples:
 Same as INSTALL section except that it shall indicates only files specific to development files (headers, static libs, docs).\
 User will choose whether he wants to install development files when installing a package.\
 The same rules on paths formating found in INSTALL section apply here also.
+
+### FILES_MODIFICATION
+List of files to modify (and content to add) after package has been installed.\
+The modifications will be written between specific markers in order to be removed when the package is uninstalled or modified when the package is upgraded.
+
+Examples:
+```
+{
+    "//FILES_MODIFICATION": "Add several lines in S:user-startup",
+    "FILES_MODIFICATION": {
+        "S:user-startup": [
+            ";For Ghostscript",
+            "c:assign <>NIL: gs: \\"Sys:Applications_ext/Office/Ghostscript/\\"",
+            "c:assign <>NIL: gs870: gs:",
+            "c:assign <>NIL: gsfonts: gs:fonts",
+            "c:assign <>NIL: Ghostscript: gs:",
+            "c:assign <>NIL: gscache: t:"
+        ]
+    }
+}
+```
+
+```
+{
+    "//FILES_MODIFICATION": "Add several lines in S:user-startup and in SYS:Prefs/Env-Archive/sys/filesystems.conf",
+    "FILES_MODIFICATION": {
+        "S:user-startup": [
+            ";For Ghostscript",
+            "c:assign <>NIL: gs: \\"Sys:Applications_ext/Office/Ghostscript/\\"",
+            "c:assign <>NIL: gs870: gs:",
+            "c:assign <>NIL: gsfonts: gs:fonts",
+            "c:assign <>NIL: Ghostscript: gs:",
+            "c:assign <>NIL: gscache: t:"
+        ],
+        "SYS:Prefs/Env-Archive/sys/filesystems.conf": [
+            "DosType=0x4e544653 Filesystem=\\"L:NTFileSystem3G\\" Name=\\"NTFS\\""
+        ]
+    }
+}
+```
 
 ### SCREENSHOTS
 List of URL to images representing screenshots of the package

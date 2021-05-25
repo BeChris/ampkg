@@ -135,6 +135,17 @@ Exemples:
 }
 ```
 
+## Utilisation de guillemets dans les chaines de caractères
+S'il est nécessaire d'utiliser des quillemets ils doivent être "échappés" avec deux \ (backslash) caractères.
+
+Exemples:
+```
+{
+    "SUMMARY": "A SUMMARY with \\"quotes\\""
+}
+```
+
+
 ## Sections obligatoires
 ### SUMMARY
 Contient une courte description du paquet en 100 caractères maximum.
@@ -409,6 +420,46 @@ Exemples:
 Même chose que la section INSTALL excepté qu'ici seuls les dossiers et/ou fichiers spécifiques au développement (headers, static libs, docs).\
 L'utilisateur choisira s'il veut installer les fichiers de développement au moment d'installer un paquet.\
 Les mêmes règles sur les chemins d'accès décrites dans la section INSTALL s'appliquent ici.
+
+### FILES_MODIFICATION
+Liste de fichiers à modifier (et contenu à rajouter) après que le paquet ai été installé.\
+Les modifications seton écrites entre des balises spéciales pour pouvoir être supprimées quand le paquet est désinstallé ou modifiées quand le paquet est mis à jour.
+
+Exemples:
+```
+{
+    "//FILES_MODIFICATION": "Rajoute plusieurs lignes dans S:user-startup",
+    "FILES_MODIFICATION": {
+        "S:user-startup": [
+            ";For Ghostscript",
+            "c:assign <>NIL: gs: \\"Sys:Applications_ext/Office/Ghostscript/\\"",
+            "c:assign <>NIL: gs870: gs:",
+            "c:assign <>NIL: gsfonts: gs:fonts",
+            "c:assign <>NIL: Ghostscript: gs:",
+            "c:assign <>NIL: gscache: t:"
+        ]
+    }
+}
+```
+
+```
+{
+    "//FILES_MODIFICATION": "Rajoute plusieurs lignes dans S:user-startup et dans SYS:Prefs/Env-Archive/sys/filesystems.conf",
+    "FILES_MODIFICATION": {
+        "S:user-startup": [
+            ";For Ghostscript",
+            "c:assign <>NIL: gs: \\"Sys:Applications_ext/Office/Ghostscript/\\"",
+            "c:assign <>NIL: gs870: gs:",
+            "c:assign <>NIL: gsfonts: gs:fonts",
+            "c:assign <>NIL: Ghostscript: gs:",
+            "c:assign <>NIL: gscache: t:"
+        ],
+        "SYS:Prefs/Env-Archive/sys/filesystems.conf": [
+            "DosType=0x4e544653 Filesystem=\\"L:NTFileSystem3G\\" Name=\\"NTFS\\""
+        ]
+    }
+}
+```
 
 ### SCREENSHOTS
 Liste d'URL vers des images représentant des screenshot du paquet
