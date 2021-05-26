@@ -34,6 +34,6 @@ In parenthesis, minimum role autorised to do the actions given:
 
 
 ## Server admin
-- [ ] Upload a package and its associated recipe file to a server (server admin)
-- [ ] Delete a package and its associated recipe file from a server (server admin)
+- [ ] Upload a package and its associated files (recipe, patch) to a server (server admin)
+- [ ] Delete a package and its associated files (recipe, patch) from a server (server admin)
 
