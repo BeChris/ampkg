@@ -25,23 +25,31 @@ There can also be RUN_MANDATORY and RUN_OPTIONAL values with the same values as 
 Example:
 ```
 {
-    "sdl2-2.0.12-2": {
-        "BASENAME": "Development/Library/sdl2-2.0.12-2"
-    },
-    "sdl2-2.0.14-1": {
-        "BASENAME": "Development/Library/sdl2-2.0.14-1"
-    },
-    "sdl2-devel-2.0.14-1": {
-        "BASENAME": "Development/Library/sdl2-2.0.14-1"
-    },
-    "sdl2_image-2.0.5-1": {
-        "BASENAME": "Development/Library/sdl2_image-2.0.5-1",
-        "RUN_MANDATORY": {
-            "sdl2": "2.0.14"
+    "sdl2": {
+        "2.0.12-2": {
+            "BASENAME": "Development/Library/sdl2-2.0.12-2"
+        },
+        "2.0.14-1": {
+            "BASENAME": "Development/Library/sdl2-2.0.14-1"
         }
     },
-    "Hollywood:Player-9.0-1": {
-        "BASENAME": "Development/Hollywood/HollywoodPlayer-9.0-1"
+    "sdl2-devel": {
+        "2.0.14-1": {
+            "BASENAME": "Development/Library/sdl2-2.0.14-1"
+        }
+    }
+    "sdl2_image": {
+        "2.0.5-1": {
+            "BASENAME": "Development/Library/sdl2_image-2.0.5-1",
+            "RUN_MANDATORY": {
+                "sdl2": "2.0.14"
+            }
+        }
+    },
+    "Hollywood:Player": {
+        "9.0-1": {
+            "BASENAME": "Development/Hollywood/HollywoodPlayer-9.0-1"
+        }
     }
 }
 ```
