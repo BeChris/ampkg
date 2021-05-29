@@ -27,7 +27,9 @@ Il écrit des fichiers .txt, .readme, .download, .patch, .build, ... dans lesque
 Il utilise ampkg pour construire, à partir des fichiers qu'il vient d'écire, un paquet binaire, peut l'installer et le tester sur son système.\
 Une fois testé, il peut utiliser ampkg pour désinstaller le paquet de test.
 
-Quand il est satisfait par le paquet, il utilise une page dédiée sur le serveur de téléchargement permettant la soumission d'un paquet.
+Quand il est satisfait par le paquet, il utilise une page dédiée sur le serveur de téléchargement permettant la soumission d'un paquet.\
+Il joint le paquet généré mais également tous les fichiers (.txt, .readme, .download, .patch, .build, ...) s'ils sont nécessaires.\
+Grace à ces fichiers un autre développeur pourra recompiler le paquet sans problèmes.
 
 ## Le cas des modérateurs
 **Les modérateurs n'ont pas besoin du SDK MorphOS.**
@@ -49,12 +51,6 @@ Il peut alors installer de nouveaux paquets, mettre à jour ou désinstaller ceu
 Dans le cas d'une installation ou d'une mise à jour, ampkg télécharge automatiquement le(s) paquet(s) (et ses/leurs dépendances obligatoires) et les installe.\
 Si le(s) paquet(s) indique quelques dependances optionelles elles sont affichées à l'utilisateur qui peut choisir celle(s) qu'il veut installer en plus.
 
-## Localisation des chaines de description
-La langue par défaut est l'anglais.
-Mais il est possible de fournir, pour un même fichier, un contenu par langue.
-Pour préciser la langue, le nom du fichier doit se terminer par _LANG (où LANG est le code ISO_639-1 de langue en 2 lettres minuscules).\
-Si aucun fichier se terminant par _LANG n'est trouvée (où LANG est la langue du système) alors le contenu du fichier sans suffixe _LANG est utilisé.
-
 ## Organisation sur le serveur de téléchargement
 L'organisation et le nommage des fichiers répond à une convention qu'il faut suivre pour qu'un paquet soit correctement référencé.\
 Ainsi, un paquet est une archive dont le nom doit correspondre à la convention : &lt;nom du paquet&gt;_&lt;version&gt;.&lt;extension&gt;\
@@ -67,22 +63,22 @@ Chacun de ces fichiers contient des informations additionelles et relatives au p
 
 Ci-dessous la liste des extensions de fichiers admises et leur signification:
 
-### .txt (ou .txt_fr, .txt_en, .txt_de, ...)
+### .txt
 Contient une courte description du paquet en 100 caractères maximum et dans la langue correspondante au suffixe _LANG utilisé.\
 Si ce fichier est absent alors une description par défaut "No description" sera affichée.
 
 
-### .readme (ou .readme_fr, .readme_en, .readme_de, ...)
+### .readme
 Contenu pouvant être affiché à la demande de l'utilisateur ou avant l'installation du paquet.
 Si ce fichier est absent alors aucun contenu ne sera affiché.
 
 
-### .url (ou .url_fr, .url_en, .url_de, ...)
+### .url
 Lien vers la page d'accueil du projet et dans la langue correspondante au suffixe _LANG utilisé.\
 Si ce fichier est absent alors aucun lien ne sera affiché.
 
 
-### .pre_messages (ou .pre_messages_fr, .pre_messages_en, .pre_messages_de, ...)
+### .pre_messages
 Liste des messages à afficher avant l'installation/mise à jour du paquet.\
 Ces messages sont concaténés et affichés en un seul bloc.\
 Pour démarrer un nouveau bloc, incluez une chaine de caractère "@@@@" dans la liste.
@@ -93,7 +89,7 @@ Wellcome to this package
 ```
 
 
-### .post_messages (ou .post_messages_fr, .post_messages_en, .post_messages_de, ...)
+### .post_messages
 Liste des messages à afficher après l'installation/mise à jour du paquet.\
 Ces messages sont concaténés et affichés en un seul bloc.\
 Pour démarrer un nouveau bloc, incluez une chaine de caractère "@@@@" dans la liste.
@@ -102,6 +98,32 @@ Exemples:
 ```
 Well done!
 See you soon.
+```
+
+
+### Localisation des chaines de description
+Dans les fichiers .txt, .readme, .url, .pre_messages et .post_messages présentés ci-dessus il est possible d'indiquer du contenu en fonction de la langue du système.\
+Pour se faire, il faut compartimenter le fichier en sections, chaque section correspondant à une langue (le code ISO_639-1 de langue en 2 lettres majuscules).\
+Une section s'écrit [section].\
+Si dans un fichier il n'y a pas de section, on considère que ça correspond à la langue Anglaise.\
+Enfin, si la section correspondante à la langue du système n'est pas trouvée dans le fichier alors le contenu de la section [EN] est pris en compte (ou le contenu hors section s'il n'y en a pas).
+
+Exemples:
+```
+[EN]
+Contenu utilisé quand la langue du système est Anglais
+[FR]
+Contenu utilisé quand la langue du système est Francais
+```
+
+```
+Contenu utilisé quand il n'y pas de section correspondante à la langue du sytème.
+[FR]
+Contenu utilisé quand la langue du système est Francais.
+[EN]
+Contenu utilisé quand la langue du système est Anglais.
+[DE]
+Contenu utilisé quand la langue du système est Allemand.
 ```
 
 
@@ -119,21 +141,18 @@ Lien vers le site de donation du développeur (paypal, patreon, ...)
 
 
 ### .install
-Quand un paquet est installé, son archive est décompressée dans le dossier $(INSTALL_DIR)/$(CATEGORY).\
-Si des commandes doivent être exécutées en plus alors elle doivent être écrites dans ce fichier.
-**IMPORTANT**: essayer une autre approche car il sera impossible pour ampkg de maitriser l'impact de ces commandes.
+Quand un paquet est installé, l'action par défaut est que son archive est décompressée dans le dossier $(INSTALL_DIR)/$(CATEGORY).\
+S'il faut faire autre chose alors les commandes à exécuter doivent être écrites dans ce fichier.
 
 
 ### .install_dev
 Même chose que l'extension .install excepté qu'ici seuls les dossiers et/ou fichiers spécifiques au développement (headers, static libs, docs).\
 L'utilisateur choisira s'il veut installer les fichiers de développement au moment d'installer un paquet.\
-**IMPORTANT**: essayer une autre approche car il sera impossible pour ampkg de maitriser l'impact de ces commandes.
 
 
 ### .uninstall
-Quand un paquet est désinstallé, son dossier est supprimé de $(INSTALL_DIR)/$(CATEGORY).\
-Si des commandes doivent être exécutées en plus alors elle doivent être écrites dans ce fichier.
-**IMPORTANT**: essayer une autre approche car il sera impossible pour ampkg de maitriser l'impact de ces commandes.
+Quand un paquet est désinstallé, l'action par défaut est que son dossier est supprimé de $(INSTALL_DIR)/$(CATEGORY).\
+S'il faut faire autre chose alors les commandes à exécuter doivent être écrites dans ce fichier.
 
 
 ### .exe
@@ -164,13 +183,14 @@ MorphOS >= 3.15
 ### .modifications
 Liste de fichiers à modifier (et contenu à rajouter) après que le paquet ai été installé.\
 Les modifications seton écrites entre des balises spéciales pour pouvoir être supprimées quand le paquet est désinstallé ou modifiées quand le paquet est mis à jour.\
-Le fichier à modifier doit d'abord apparaitre seul sur une ligne qui débute par le caractère # et qui se termine par le caractère :, suivi de l'ensemble du contenu à rajouter.\
+Le fichier à modifier doit être indiqué dans une section [nom du fichier].\
+Les lignes qui suivent correspondent à ce qu'il faut rajouter dans le fichier.\
 Il est possible de cummuler les modifications de plusieurs fichiers.
 
 Exemples:
 Rajoute plusieurs lignes dans S:user-startup
 ```
-#S:user-startup:
+[S:user-startup]
 ;For Ghostscript
 c:assign <>NIL: gs: "Sys:Applications_ext/Office/Ghostscript/",
 c:assign <>NIL: gs870: gs:
@@ -181,16 +201,44 @@ c:assign <>NIL: gscache: t:
 
 Rajoute plusieurs lignes dans S:user-startup et dans SYS:Prefs/Env-Archive/sys/filesystems.conf
 ```
-#S:user-startup:
+[S:user-startup]
 ;For Ghostscript
 c:assign <>NIL: gs: "Sys:Applications_ext/Office/Ghostscript/",
 c:assign <>NIL: gs870: gs:
 c:assign <>NIL: gsfonts: gs:fonts
 c:assign <>NIL: Ghostscript: gs:
 c:assign <>NIL: gscache: t:
-#SYS:Prefs/Env-Archive/sys/filesystems.conf:
+[SYS:Prefs/Env-Archive/sys/filesystems.conf]
 DosType=0x4e544653 Filesystem="L:NTFileSystem3G" Name="NTFS"
 ```
+
+
+### Exécution de commandes
+Dans les fichiers .install, .install_dev et .uninstall présentés ci-dessus il est possible d'effectuer certaines opérations sur des dossiers et/ou fichiers.\
+Il est possible d'indiquer une commande à exécuter par ligne.\
+Dès qu'une commande échoue l'installation ou la désinstallation est interrompue.\
+Pour des raisons de sécurité il n'est pas possible d'exécuter des commandes AmigaDOS classiques mais plutôt un ensemble restreint.\
+Chacune de ces commandes crée les dossiers de destination si nécessaire.
+
+Voici la liste des commandes utilisables:
+* EXTRACT:&lt;fichier archive&gt; TO:&lt;dossier destination&gt;
+Décompresse &lt;fichier archive&gt; dans le dossier de destination &lt;dossier destination&gt;
+* COPY:&lt;source&gt; TO:&lt;dossier destination&gt;
+Copie le dossier ou fichier &lt;source&gt; dans le dossier de destination &lt;dossier destination&gt;\
+Si &lt;source&gt; est un dossier alors tout son contenu est copié.
+* COPY:&lt;motif&gt; TO:&lt;dossier destination&gt;
+Copie le(s) dossier(s) ou fichier(s) qui correpond(ent) à &lt;motif&gt; dans le dossier de destination &lt;dossier destination&gt;
+* RENAME:&lt;ancien nom&gt; TO:&lt;nouveau nom&gt;
+Renomme le dossier ou fichier &lt;ancien nom&gt; en &lt;nouveau nom&gt;
+* DELETE:&lt;source&gt;
+Supprime le dossier ou fichier &lt;source&gt;
+* DELETE:&lt;motif&gt;
+Supprime le(s) dossier(s) ou fichier(s) qui correpond(ent) à &lt;motif&gt;
+
+**Nota**: un motif est du genre *.jpg, *.*, dossier/*.png, ...
+
+Commandes à rajouter?
+
 
 ## Liste des extensions additionelles pour un paquet qui doit être compilé
 
@@ -224,10 +272,45 @@ SDL2-2.0.14.patch
 ### .build
 Ce fichier contient la liste des instructions à exécuter.\
 Ici on considère que l'utilisateur a le SDK installé.
-**IMPORTANT** : ne pas exécuter qui copient/génèrent des fichiers ailleurs que dans le dossier de construction du paquet
+**IMPORTANT** : ne pas exécuter des commandes qui copient/génèrent des fichiers ailleurs que dans le dossier de construction du paquet
 
 Exemples:
 ```
 make -C SDL2
 make -C SDL2 headers
+```
+
+
+### Vérifier les capacités processeur
+Dans les fichiers .install, .install_dev, .uninstall, .exe, .requires, .modifications, .download, .patch et .build présentés ci-dessus il est possible d'indiquer du contenu en fonction des capacités du processeur.\
+Pour se faire, il faut compartimenter le fichier en sections, chaque section correspondant à une ou plusieurs capacités séparés par des espaces.\
+Une section s'écrit [section].\
+Si une section correspond exactement aux capacités du processeur c'est cette section (et uniquement celle là) dont le contenu est pris en compte.\
+Si dans un fichier il n'y a pas de section, Le contenu est applicable quelque soient les capacités du processeur.
+
+Les capacités supportées sont:
+1. Pour les processeurs PowerPC:
+   1. FPU : le processeur a une FPU
+   2. ALTIVEC : le processeur a une unité Altivec
+   3. PERFMONITOR : le processeur a une extension de type performance measurement
+   4. DATASTREAM : le processeur a une extension datastream
+2. Pour les processeurs x86:
+   1. FPU : le processeur a une FPU
+   2. MMX : le processeur a le jeu d'instructions MMX
+   3. SSE : le processeur a le jeu d'instructions SSE
+   4. SSE2 : le processeur a le jeu d'instructions SSE2
+   5. AVX : le processeur a le jeu d'instructions AVX
+   6. AVX2 : le processeur a le jeu d'instructions AVX2
+   7. Capacités à rajouter ?
+
+Exemples:
+```
+Contenu utilisé dans tous les cas
+[FPU]
+Contenu utilisé seulement si le processeur a une FPU (qu'il ai ou pas une unité ALTIVEC).
+```
+
+```
+[FPU ALTIVEC]
+Contenu utilisé seulement si le processeur a une FPU et une unité ALTIVEC.
 ```
